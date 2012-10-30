@@ -1,0 +1,55 @@
+Zorbus\NewsletterBundle\Entity\Newsletter:
+    type: entity
+    table: zorbus_newsletter_newsletter
+    repositoryClass: Zorbus\NewsletterBundle\Entity\NewsletterRepository
+    id:
+        id:
+            type: integer
+            generator: { strategy: AUTO }
+    fields:
+        title:
+            type: string
+            length: 255
+            nullable: false
+        description:
+            type: text
+        lang:
+            type: string
+            length: 5
+            nullable: true
+            default: en_US
+        url:
+            type: string
+            length: 255
+            nullable: true
+        body:
+            type: text
+            nullable: true
+        slug:
+            type: string
+            length: 255
+            gedmo:
+                slug:
+                    separator: '-'
+                    style: default
+                    fields:
+                        - title
+        enabled:
+            type: boolean
+            default: true
+            nullable: true
+        created_at:
+            type: datetime
+            gedmo:
+                timestampable:
+                    on: create
+        updated_at:
+            type: datetime
+            gedmo:
+                timestampable:
+                    on: update
+
+    oneToMany:
+        users:
+            targetEntity: Zorbus\NewsletterBundle\Entity\User
+            mappedBy: newsletter

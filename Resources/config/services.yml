@@ -1,0 +1,25 @@
+parameters:
+    zorbus_newsletter.newsletter.admin.class: Zorbus\NewsletterBundle\Admin\NewsletterAdmin
+    zorbus_newsletter.user.admin.class: Zorbus\NewsletterBundle\Admin\UserAdmin
+
+    zorbus_newsletter.newsletter.entity.class: Zorbus\NewsletterBundle\Entity\Newsletter
+    zorbus_newsletter.user.entity.class: Zorbus\NewsletterBundle\Entity\User
+
+    zorbus_newsletter.newsletter.controller.class: SonataAdminBundle:CRUD
+    zorbus_newsletter.user.controller.class: SonataAdminBundle:CRUD
+
+services:
+    zorbus_newsletter.newsletter.admin:
+        class: %zorbus_newsletter.newsletter.admin.class%
+        arguments: [~, %zorbus_newsletter.newsletter.entity.class%, %zorbus_newsletter.newsletter.controller.class%]
+        calls:
+            - [setTranslationDomain, [NewsletterBundle]]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Newsletters, label: Newsletters }
+    zorbus_newsletter.user.admin:
+        class: %zorbus_newsletter.user.admin.class%
+        arguments: [~, %zorbus_newsletter.user.entity.class%, %zorbus_newsletter.user.controller.class%]
+        calls:
+            - [setTranslationDomain, [NewsletterBundle]]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Newsletters, label: Users }
