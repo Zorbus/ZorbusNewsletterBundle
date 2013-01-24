@@ -5,9 +5,10 @@ namespace Zorbus\NewsletterBundle\Admin;
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
-use Sonata\AdminBundle\Validator\ErrorElement;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\MaxLength;
 
 class NewsletterAdmin extends Admin
 {
@@ -21,8 +22,20 @@ class NewsletterAdmin extends Admin
     {
         $formMapper
                 ->with('Identification')
-                ->add('title')
-                ->add('description', 'textarea', array('required' => false, 'attr' => array('class' => 'ckeditor')))
+                ->add('title', null, array(
+                    'required' => true,
+                    'constraints' => array(
+                        new NotBlank(),
+                        new MaxLength(array('limit' => 255))
+                    )  
+                ))
+                ->add('description', 'textarea', array(
+                    'required' => false, 
+                    'attr' => array('class' => 'ckeditor'),
+                    'constraints' => array(
+                        new NotBlank()
+                    )
+                ))
                 ->add('lang', null, array('required' => false))
                 ->add('enabled', null, array('required' => false))
                 ->end()
@@ -58,16 +71,6 @@ class NewsletterAdmin extends Admin
                 ->add('enabled')
                 ->add('url')
                 ->add('body')
-        ;
-    }
-
-    public function validate(ErrorElement $errorElement, $object)
-    {
-        $errorElement
-                ->with('title')
-                ->assertNotBlank()
-                ->assertMaxLength(array('limit' => 255))
-                ->end()
         ;
     }
 
